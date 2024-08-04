@@ -1,7 +1,25 @@
 fx_version 'cerulean'
-games { 'gta5' }
+game 'gta5'
+lua54 'yes'
 
 author 'Slayze'
-description 'search System'
-version '1.0'
+description 'Script de fouille avec loot pour FiveM utilisant ox_target et ox_lib'
+version '1.0.0'
 
+-- Les fichiers à inclure
+client_scripts {
+    '@ox_lib/init.lua', 
+    'client.lua'
+}
+
+server_scripts {
+    '@ox_lib/init.lua', 
+    'server.lua'
+}
+
+
+dependencies {
+    'ox_lib',
+    'ox_target',
+    'ox_inventory' -- Si utilisé pour gérer les items
+}
