@@ -2,7 +2,6 @@
 local ox_target = exports.ox_target
 local ox_lib = exports.ox_lib
 
-
 local searchProps = {
     {model = 'prop_bin_01a', label = 'Poubelle'},
     {model = 'prop_bin_02a', label = 'Poubelle'},
@@ -42,13 +41,6 @@ local function searchProp(entity)
 
     TriggerServerEvent('my_script:search')
 
-
-    ox_lib:notify({
-        type = 'success',
-        description = 'Vous avez trouvé quelque chose!'
-    })
-
-
     searchedProps[entityID] = true
 
 
@@ -72,6 +64,22 @@ local function initTarget()
         }, {distance = 2.0})
     end
 end
+
+
+RegisterNetEvent('my_script:notifyLoot')
+AddEventHandler('my_script:notifyLoot', function(foundLoot)
+    if foundLoot then
+        ox_lib:notify({
+            type = 'success',
+            description = 'Vous avez trouvé quelque chose!'
+        })
+    else
+        ox_lib:notify({
+            type = 'error',
+            description = 'Vous n\'avez rien trouvé cette fois.'
+        })
+    end
+end)
 
 
 CreateThread(function()
