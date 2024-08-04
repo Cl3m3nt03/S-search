@@ -4,7 +4,7 @@ local ox_lib = exports.ox_lib
 
 
 local searchProps = {
-    {model = 'prop_bin_01a', label = 'car1'},
+    {model = 'prop_bin_01a', label = 'Poubelle'},
     {model = 'prop_bin_02a', label = 'Poubelle'},
     {model = 'prop_bin_03a', label = 'Poubelle'},
     {model = 'prop_car_01a', label = 'Voiture'},
@@ -22,7 +22,7 @@ local function searchProp(entity)
 
     TriggerServerEvent('my_script:search')
 
-
+ 
     Citizen.Wait(5000)
     ox_lib:notify({
         type = 'success',
@@ -34,18 +34,15 @@ end
 local function initTarget()
     for _, prop in ipairs(searchProps) do
         ox_target:addModel(prop.model, {
-            options = {
-                {
-                    name = prop.label,
-                    label = 'Fouiller',
-                    icon = 'fas fa-search',
-                    onSelect = function(data)
-                        searchProp(data.entity)
-                    end
-                }
-            },
-            distance = 2.0
-        })
+            {
+                name = prop.label, 
+                label = 'Fouiller',
+                icon = 'fas fa-search',
+                onSelect = function(data)
+                    searchProp(data.entity)
+                end
+            }
+        }, {distance = 2.0})
     end
 end
 
