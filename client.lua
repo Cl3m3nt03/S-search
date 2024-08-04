@@ -11,7 +11,24 @@ local searchProps = {
 }
 
 
+local searchedProps = {}
+
+
+local cooldownTime = 5 * 60 * 1000
+
+
 local function searchProp(entity)
+    local entityID = NetworkGetNetworkIdFromEntity(entity)
+
+
+    if searchedProps[entityID] then
+        ox_lib:notify({
+            type = 'error',
+            description = 'Vous avez déjà fouillé cet objet récemment. Essayez plus tard!'
+        })
+        return
+    end
+
 
     ox_lib:notify({
         type = 'info',
@@ -20,14 +37,24 @@ local function searchProp(entity)
     })
 
 
+    Citizen.Wait(5000)
+
+
     TriggerServerEvent('my_script:search')
 
- 
-    Citizen.Wait(5000)
+
     ox_lib:notify({
         type = 'success',
         description = 'Vous avez trouvé quelque chose!'
     })
+
+
+    searchedProps[entityID] = true
+
+
+    Citizen.SetTimeout(cooldownTime, function()
+        searchedProps[entityID] = nil
+    end)
 end
 
 
@@ -35,7 +62,7 @@ local function initTarget()
     for _, prop in ipairs(searchProps) do
         ox_target:addModel(prop.model, {
             {
-                name = prop.label, 
+                name = prop.label,
                 label = 'Fouiller',
                 icon = 'fas fa-search',
                 onSelect = function(data)
